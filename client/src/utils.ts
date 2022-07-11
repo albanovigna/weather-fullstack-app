@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CityWeather, Coordinates, CityForecast } from "./vite-env";
+import { CityWeather, Coordinates, CityData } from "./vite-env";
 
 declare module "axios" {
   export interface AxiosRequestConfig {
@@ -8,7 +8,7 @@ declare module "axios" {
   }
 }
 
-export const getCityInfo = async (city: String): Promise<CityWeather> => {
+export const getCityInfo = async (city: String): Promise<CityData> => {
   const result = await axios.get(
     `http://localhost:3001/weather?queryCity=${city}`
   );
@@ -17,7 +17,7 @@ export const getCityInfo = async (city: String): Promise<CityWeather> => {
 
 export const getCityInfoByBody = async (
   coord: Coordinates
-): Promise<CityWeather> => {
+): Promise<CityData> => {
   console.log(coord, "coords es");
   const result = await axios.get(
     `http://localhost:3001/weather/body?lat=${coord.lat}&lon=${coord.lon}`,
@@ -26,14 +26,14 @@ export const getCityInfoByBody = async (
   return result.data;
 };
 
-export const getCityForecast = async (
-  coord: Coordinates
-): Promise<Array<CityForecast>> => {
-  const result = await axios.get(
-    `http://localhost:3001/weather/forecast?lat=${coord.lat}&lon=${coord.lon}`,
-    coord
-  );
-  return result.data;
-};
+// export const getCityForecast = async (
+//   coord: Coordinates
+// ): Promise<Array<CityForecast>> => {
+//   const result = await axios.get(
+//     `http://localhost:3001/weather/forecast?lat=${coord.lat}&lon=${coord.lon}`,
+//     coord
+//   );
+//   return result.data;
+// };
 
 // export default getCityInfo;

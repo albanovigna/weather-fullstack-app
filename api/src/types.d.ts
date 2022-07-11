@@ -28,6 +28,8 @@ export interface Coordinates {
   lon: number;
 }
 
+export type CityData = CityWeather & CityForecast;
+
 export type NonSensitiveInfoDiaryEntry = Omit<DiaryEntry, "comment">;
 export type NewDiaryEntry = Omit<DiaryEntry, "id">;
 

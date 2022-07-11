@@ -47,6 +47,7 @@ router.get("/", async (req, res) => {
 
 router.get("/body", async (req, res) => {
   try {
+    const arrayForecast: Array<CityForecast> = [];
     const { lat, lon } = req.query;
     const city = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
@@ -57,7 +58,21 @@ router.get("/body", async (req, res) => {
       lat: city.data.coord.lat,
       lon: city.data.coord.lon,
     };
-    res.status(200).json(cityObject);
+    const forecast = await axios.get(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely&units=metric&appid=${API_KEY}&units=metric`
+    );
+    forecast.data.daily.map((day: any) => {
+      const cityObject: CityForecast = {
+        dateTime: day.dt,
+        min: day.temp.min,
+        max: day.temp.max,
+        description: day.weather[0].main,
+        icon: day.weather[0].icon,
+      };
+      arrayForecast.push(cityObject);
+    });
+    const dataObject = { ...cityObject, forecast: arrayForecast };
+    res.status(200).json(dataObject);
   } catch (error) {
     res.status(400).send("Error in the http request");
   }
