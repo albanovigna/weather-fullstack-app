@@ -19,3 +19,9 @@ export interface CityForecast {
   description: string;
   icon: string;
 }
+
+export interface Forecast {
+  forecast: Array<CityForecast>;
+}
+
+export type CityData = CityWeather & Forecast;
